@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Search Certificate{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-search me-2"></i>Certificate Verification
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('search_certificate') }}" method="POST" id="searchForm">
+                    <div class="mb-4">
+                        <label for="email" class="form-label fw-bold">Enter Your Gmail Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                            <input type="email" 
+                                   class="form-control form-control-lg" 
+                                   id="email" 
+                                   name="email" 
+                                   value="{{ email or '' }}"
+                                   placeholder="example@gmail.com"
+                                   required
+                                   pattern="[a-zA-Z0-9._%+-]+@gmail\.com$">
+                        </div>
+                        <div class="form-text">
+                            Enter the Gmail address used during certificate issuance
+                        </div>
+                        <div class="invalid-feedback" id="emailError">
+                            Please enter a valid Gmail address
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-search me-2"></i>Search Certificate
+                        </button>
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-home me-2"></i>Back to Home
+                        </a>
+                    </div>
+                </form>
+                
+                <div class="mt-4 pt-4 border-top">
+                    <h5 class="mb-3">Need Help?</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-question-circle text-primary me-2"></i>
+                            Ensure you're using the correct Gmail address
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-question-circle text-primary me-2"></i>
+                            Contact support if you've lost access to your email
+                        </li>
+                        <li>
+                            <i class="fas fa-question-circle text-primary me-2"></i>
+                            Check spam folder for certificate issuance email
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('searchForm');
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('emailError');
+    
+    form.addEventListener('submit', function(e) {
+        const email = emailInput.value.trim();
+        const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+        
+        if (!gmailPattern.test(email)) {
+            e.preventDefault();
+            emailInput.classList.add('is-invalid');
+            emailError.style.display = 'block';
+        } else {
+            emailInput.classList.remove('is-invalid');
+            emailError.style.display = 'none';
+        }
+    });
+    
+    // Real-time validation
+    emailInput.addEventListener('input', function() {
+        const email = emailInput.value.trim();
+        const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+        
+        if (email && !gmailPattern.test(email)) {
+            emailInput.classList.add('is-invalid');
+            emailError.style.display = 'block';
+        } else {
+            emailInput.classList.remove('is-invalid');
+            emailError.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock %}

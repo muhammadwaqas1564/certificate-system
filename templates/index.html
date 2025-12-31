@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Certificate Verification System{% endblock %}
+
+{% block content %}
+<div class="hero-section text-center py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-4">Verify Your Certificates Online</h1>
+        <p class="lead mb-4">Secure and instant verification of digital certificates issued by trusted organizations.</p>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg">
+                    <div class="card-body p-5">
+                        <h3 class="card-title mb-4">Verify Your Certificate</h3>
+                        <p class="text-muted mb-4">Enter your Gmail address to search for your certificate</p>
+                        
+                        <form action="{{ url_for('search_certificate') }}" method="POST" class="row g-3">
+                            <div class="col-12">
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                    <input type="email" 
+                                           class="form-control" 
+                                           name="email" 
+                                           placeholder="Enter your Gmail address" 
+                                           required
+                                           pattern="[a-zA-Z0-9._%+-]+@gmail\.com$">
+                                </div>
+                                <div class="form-text">
+                                    Only Gmail addresses are accepted for verification
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="fas fa-search me-2"></i>Verify Certificate
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="mt-4">
+                            <a href="{{ url_for('search_certificate') }}" class="text-decoration-none">
+                                Advanced Search <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="features-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Why Choose Our Platform?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-shield-alt fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="card-title">Secure Verification</h4>
+                        <p class="card-text">Industry-standard security measures to protect your certificates and data.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-bolt fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="card-title">Instant Access</h4>
+                        <p class="card-text">Get instant access to your certificates anytime, anywhere.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="fas fa-download fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="card-title">Easy Download</h4>
+                        <p class="card-text">Download your certificates in high-quality PDF or image format.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Certificate Preview{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-certificate me-2"></i>Certificate Preview
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="certificate-info mb-4">
+                    <h5>Certificate Details</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Email:</strong> {{ certificate.email }}</p>
+                            <p><strong>Upload Date:</strong> {{ certificate.upload_date.strftime('%Y-%m-%d %H:%M') }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>File Type:</strong> {{ certificate.certificate_filename.rsplit('.', 1)[1].upper() }}</p>
+                            <p><strong>Status:</strong> <span class="badge bg-success">Verified</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="certificate-preview border rounded p-3 mb-4">
+                    <h6 class="text-center mb-3">Certificate Preview</h6>
+                    
+                    {% if is_pdf %}
+                    <div class="pdf-preview">
+                        <iframe src="{{ url_for('download_certificate', email=certificate.email) }}" 
+                                width="100%" 
+                                height="600"
+                                style="border: none;">
+                            Your browser does not support PDF preview.
+                        </iframe>
+                    </div>
+                    {% elif is_image %}
+                    <div class="image-preview text-center">
+                        <img src="{{ url_for('download_certificate', email=certificate.email) }}" 
+                             alt="Certificate" 
+                             class="img-fluid rounded shadow"
+                             style="max-height: 600px;">
+                    </div>
+                    {% else %}
+                    <div class="alert alert-warning text-center py-5">
+                        <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+                        <h5>Preview not available for this file type</h5>
+                        <p>You can still download the certificate file.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card shadow">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-download me-2"></i>Download Options
+                </h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <i class="fas fa-certificate fa-4x text-success mb-3"></i>
+                    <h4>Certificate Verified</h4>
+                    <p class="text-muted">Your certificate is ready for download</p>
+                </div>
+                
+                <div class="d-grid gap-3">
+                    <a href="{{ url_for('download_certificate', email=certificate.email) }}" 
+                       class="btn btn-success btn-lg">
+                        <i class="fas fa-download me-2"></i>Download Certificate
+                    </a>
+                    
+                    <a href="{{ url_for('search_certificate') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-search me-2"></i>Search Another
+                    </a>
+                    
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-home me-2"></i>Back to Home
+                    </a>
+                </div>
+                
+                <div class="mt-4 pt-4 border-top">
+                    <h6>Verification Information</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-2"></i>
+                            Certificate authenticity verified
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-shield-alt text-success me-2"></i>
+                            Digital signature validated
+                        </li>
+                        <li>
+                            <i class="fas fa-calendar-check text-success me-2"></i>
+                            Issued on {{ certificate.upload_date.strftime('%B %d, %Y') }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="alert alert-info mt-4">
+            <h6><i class="fas fa-lightbulb me-2"></i>Tips</h6>
+            <ul class="mb-0 small">
+                <li>Save a copy of your certificate for future reference</li>
+                <li>Print on high-quality paper for physical copies</li>
+                <li>Share the download link with employers/verifiers</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

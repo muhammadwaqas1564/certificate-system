@@ -1,0 +1,370 @@
+/* Global Styles for Certificate Verification System */
+
+:root {
+    --primary-color: #4e73df;
+    --secondary-color: #858796;
+    --success-color: #1cc88a;
+    --danger-color: #e74a3b;
+    --warning-color: #f6c23e;
+    --info-color: #36b9cc;
+    --light-color: #f8f9fc;
+    --dark-color: #5a5c69;
+    --admin-color: #2c3e50;
+    --admin-secondary: #34495e;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fc;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Admin Body */
+body.admin-body {
+    background-color: #f5f7fa;
+}
+
+/* Public Navigation */
+.navbar.bg-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+/* Admin Navigation */
+.navbar.admin-nav {
+    background: linear-gradient(90deg, var(--admin-color) 0%, var(--admin-secondary) 100%) !important;
+}
+
+/* Admin Badge */
+.badge.bg-danger {
+    font-size: 0.6rem;
+    vertical-align: top;
+    position: relative;
+    top: -5px;
+}
+
+/* Admin Breadcrumb */
+.admin-breadcrumb {
+    background-color: #ecf0f1 !important;
+    border-bottom: 1px solid #bdc3c7;
+}
+
+.admin-breadcrumb .breadcrumb-item a {
+    color: var(--admin-color);
+    text-decoration: none;
+}
+
+.admin-breadcrumb .breadcrumb-item.active {
+    color: #7f8c8d;
+}
+
+/* Admin Footer */
+.admin-footer {
+    background-color: var(--admin-color) !important;
+    border-top: 2px solid #1a252f;
+}
+
+/* Admin Card Header */
+.admin-card-header {
+    background-color: var(--admin-secondary) !important;
+    color: white !important;
+}
+
+/* Admin Button */
+.btn-admin {
+    background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    border: none;
+    font-weight: 600;
+}
+
+.btn-admin:hover {
+    background: linear-gradient(90deg, #2980b9 0%, #1c5a8a 100%);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Admin Badge Color */
+.admin-badge {
+    background-color: #9b59b6 !important;
+}
+
+/* Admin Table */
+.admin-body .table th {
+    background-color: #f8f9fc;
+    color: var(--admin-color);
+    border-bottom: 2px solid var(--admin-secondary);
+}
+
+.admin-body .table td {
+    border-color: #e9ecef;
+}
+
+/* Admin Danger Zone */
+.danger-zone {
+    border: 2px solid var(--danger-color);
+    background-color: rgba(231, 76, 60, 0.05);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+}
+
+/* Admin Modal Customization */
+.admin-body .modal-header {
+    background-color: var(--admin-secondary);
+    color: white;
+}
+
+.admin-body .modal-footer {
+    background-color: #f8f9fa;
+}
+
+/* Rest of your existing CSS remains the same */
+main {
+    flex: 1;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.navbar-brand i {
+    margin-right: 0.5rem;
+}
+
+.card {
+    border: none;
+    border-radius: 0.5rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-header {
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+    font-weight: 600;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 0 0 2rem 2rem;
+    margin-bottom: 3rem;
+}
+
+.hero-section h1 {
+    font-weight: 800;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.hero-section .lead {
+    font-size: 1.25rem;
+    opacity: 0.9;
+}
+
+.feature-icon {
+    color: var(--primary-color);
+    transition: transform 0.3s;
+}
+
+.feature-icon:hover {
+    transform: scale(1.1);
+}
+
+.form-control, .form-select {
+    border: 1px solid #d1d3e2;
+    border-radius: 0.35rem;
+    padding: 0.75rem 1rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+}
+
+.input-group-text {
+    background-color: #f8f9fc;
+    border: 1px solid #d1d3e2;
+}
+
+.btn {
+    border-radius: 0.35rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s;
+}
+
+.btn-lg {
+    padding: 0.875rem 2rem;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: #2e59d9;
+    border-color: #2653d4;
+    transform: translateY(-1px);
+}
+
+.table {
+    background-color: white;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-top: none;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.alert {
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.alert-success {
+    background-color: #d1f7e5;
+    color: #0f6848;
+}
+
+.alert-danger {
+    background-color: #fde8e8;
+    color: #c03221;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.certificate-preview {
+    background-color: #f8f9fc;
+    min-height: 300px;
+}
+
+.certificate-info {
+    background-color: #f8f9fc;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+.card.bg-primary, .card.bg-success, .card.bg-info, .card.bg-warning {
+    color: white;
+}
+
+.card.bg-primary {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+}
+
+.card.bg-success {
+    background: linear-gradient(135deg, #1cc88a 0%, #13855c 100%);
+}
+
+.card.bg-info {
+    background: linear-gradient(135deg, #36b9cc 0%, #258391 100%);
+}
+
+.card.bg-warning {
+    background: linear-gradient(135deg, #f6c23e 0%, #dda20a 100%);
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 0;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+}
+
+footer {
+    margin-top: auto;
+}
+
+footer h5 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+footer p {
+    margin-bottom: 0.5rem;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
+
+.modal-content {
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.modal-header {
+    border-bottom: 1px solid #e3e6f0;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+input[type="file"]::file-selector-button {
+    padding: 0.5rem 1rem;
+    border-radius: 0.35rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    margin-right: 1rem;
+    transition: background-color 0.2s;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #2e59d9;
+}
+
+code {
+    background-color: #f8f9fc;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    color: var(--danger-color);
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    .certificate-preview {
+        border: none !important;
+    }
+}

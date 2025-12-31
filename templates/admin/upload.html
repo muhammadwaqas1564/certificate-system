@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Certificates - Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    .drop-zone {
+        border: 3px dashed #dee2e6;
+        border-radius: 10px;
+        padding: 60px 20px;
+        text-align: center;
+        background-color: #f8f9fa;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .drop-zone:hover, .drop-zone.dragover {
+        border-color: #0d6efd;
+        background-color: #e7f1ff;
+    }
+    .file-list {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+    .file-item {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="mb-5">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Upload</li>
+                    </ol>
+                </nav>
+                <h1 class="h2 fw-bold">Upload Certificates</h1>
+                <p class="text-muted">Upload certificate files in bulk. Each filename must be the recipient's email address.</p>
+            </div>
+            
+            <!-- Upload Card -->
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <!-- Instructions -->
+                    <div class="alert alert-info mb-4">
+                        <h5 class="alert-heading">
+                            <i class="bi bi-info-circle-fill me-2"></i>Important Instructions
+                        </h5>
+                        <ul class="mb-0">
+                            <li>Each certificate file must be named as the recipient's email address</li>
+                            <li>Example: <code>john.doe@gmail.com.pdf</code></li>
+                            <li>Supported formats: PDF, PNG, JPG, JPEG</li>
+                            <li>Maximum file size: 16MB per file</li>
+                            <li>Duplicate emails will be skipped automatically</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Upload Form -->
+                    <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                        <!-- Drop Zone -->
+                        <div class="drop-zone mb-4" id="dropZone">
+                            <i class="bi bi-cloud-upload display-1 text-primary mb-3"></i>
+                            <h4>Drop files here or click to browse</h4>
+                            <p class="text-muted mb-3">Upload multiple certificate files at once</p>
+                            <input type="file" 
+                                   name="certificates" 
+                                   id="fileInput" 
+                                   multiple 
+                                   accept=".pdf,.png,.jpg,.jpeg"
+                                   class="d-none">
+                            <button type="button" class="btn btn-primary px-4" id="browseBtn">
+                                <i class="bi bi-folder2-open me-2"></i>Browse Files
+                            </button>
+                        </div>
+                        
+                        <!-- File List -->
+                        <div class="mb-4" id="fileListContainer" style="display: none;">
+                            <h5 class="mb-3">Selected Files</h5>
+                            <div class="file-list" id="fileList"></div>
+                            <div class="mt-3">
+                                <button type="button" class="btn btn-outline-danger btn-sm" id="clearFilesBtn">
+                                    <i class="bi bi-x-circle me-1"></i>Clear All
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Upload Progress -->
+                        <div class="mb-4" id="progressContainer" style="display: none;">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Uploading...</span>
+                                <span id="progressText">0%</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                                     id="progressBar" 
+                                     style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary me-2">
+                                <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4" id="uploadBtn">
+                                <i class="bi bi-upload me-2"></i>Upload Certificates
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Example Files -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-file-earmark-text me-2"></i>Example File Names
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Correct</th>
+                                    <th>Incorrect</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code class="text-success">john.doe@gmail.com.pdf</code></td>
+                                    <td><code class="text-danger">john_doe_certificate.pdf</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="text-success">jane.smith@company.com.png</code></td>
+                                    <td><code class="text-danger">certificate_jane.png</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code class="text-success">user123@domain.org.jpg</code></td>
+                                    <td><code class="text-danger">12345.jpg</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const browseBtn = document.getElementById('browseBtn');
+    const fileList = document.getElementById('fileList');
+    const fileListContainer = document.getElementById('fileListContainer');
+    const clearFilesBtn = document.getElementById('clearFilesBtn');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    
+    let files = [];
+    
+    // Browse button click
+    browseBtn.addEventListener('click', () => fileInput.click());
+    
+    // File input change
+    fileInput.addEventListener('change', (e) => {
+        files = Array.from(e.target.files);
+        updateFileList();
+    });
+    
+    // Drag and drop
+    dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+    
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('dragover');
+    });
+    
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        files = Array.from(e.dataTransfer.files);
+        fileInput.files = e.dataTransfer.files;
+        updateFileList();
+    });
+    
+    // Clear files
+    clearFilesBtn.addEventListener('click', () => {
+        files = [];
+        fileInput.value = '';
+        updateFileList();
+    });
+    
+    // Update file list display
+    function updateFileList() {
+        fileList.innerHTML = '';
+        
+        if (files.length === 0) {
+            fileListContainer.style.display = 'none';
+            uploadBtn.disabled = true;
+            return;
+        }
+        
+        fileListContainer.style.display = 'block';
+        uploadBtn.disabled = false;
+        
+        files.forEach((file, index) => {
+            const div = document.createElement('div');
+            div.className = 'file-item d-flex justify-content-between align-items-center';
+            
+            const fileInfo = document.createElement('div');
+            fileInfo.className = 'd-flex align-items-center';
+            
+            const icon = document.createElement('i');
+            icon.className = getFileIcon(file.name);
+            icon.style.fontSize = '1.2rem';
+            icon.style.marginRight = '10px';
+            
+            const text = document.createElement('span');
+            text.textContent = `${file.name} (${formatFileSize(file.size)})`;
+            
+            fileInfo.appendChild(icon);
+            fileInfo.appendChild(text);
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.type = 'button';
+            removeBtn.className = 'btn btn-sm btn-outline-danger';
+            removeBtn.innerHTML = '<i class="bi bi-x"></i>';
+            removeBtn.onclick = () => {
+                files.splice(index, 1);
+                updateFileList();
+            };
+            
+            div.appendChild(fileInfo);
+            div.appendChild(removeBtn);
+            fileList.appendChild(div);
+        });
+    }
+    
+    // Form submission
+    document.getElementById('uploadForm').addEventListener('submit', function(e) {
+        if (files.length === 0) {
+            e.preventDefault();
+            alert('Please select at least one file.');
+            return;
+        }
+        
+        // Show progress bar
+        progressContainer.style.display = 'block';
+        uploadBtn.disabled = true;
+        
+        // Simulate progress (in real app, this would be handled by AJAX)
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 10;
+            progressBar.style.width = progress + '%';
+            progressText.textContent = progress + '%';
+            
+            if (progress >= 100) {
+                clearInterval(interval);
+                // Form will submit normally
+            }
+        }, 100);
+    });
+    
+    // Helper functions
+    function getFileIcon(filename) {
+        const ext = filename.split('.').pop().toLowerCase();
+        if (ext === 'pdf') return 'bi bi-file-earmark-pdf text-danger';
+        if (['png', 'jpg', 'jpeg', 'gif'].includes(ext)) return 'bi bi-file-earmark-image text-success';
+        return 'bi bi-file-earmark text-secondary';
+    }
+    
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+});
+</script>
+{% endblock %}
